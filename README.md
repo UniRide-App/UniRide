@@ -1,13 +1,14 @@
 # UniRide
 # Members
-Project Manager: [Name] ([GitHub Name])\
-Communications Lead: [Name] ([GitHub Name])\
-Git Master: [Name] ([GitHub Name])\
-Design Lead: [Name] ([GitHub Name])\
-Quality Assurance Tester: [Name] ([GitHub Name])\
-Hacker: [Name] ([GitHub Name])\
-Hustler: [Name] ([GitHub Name])\
-Hipster: [Name] ([GitHub Name])\
+Project Manager: Hannah Lowery (HannahLowery)\
+Communications Lead: Jack Dugan([GitHub Name])\
+Git Master: Jeremiah McKeey (Noxileus\
+Design Lead: Jessica Smith ([GitHub Name])\
+Quality Assurance: Gracielle Perez([GitHub Name])\
+
+Hacker: Hannah Lowery,  Jeremiah Mckeey \
+Hustler: Jack Dugan\
+Hipster: Jessica Smith, Gracielle Perez 
 
 # About Our Software
 
