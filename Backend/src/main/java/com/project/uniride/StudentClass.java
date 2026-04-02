@@ -2,24 +2,24 @@ package com.project.uniride;
 
 public class StudentClass {
     private Long id;
-    private String uname;
+    private String username;
     private String password;
     private String email;
     private boolean isVerified;
 
     public StudentClass(){}
-    public StudentClass(Long id, String uname, String password, String email, boolean isVerified){
+    public StudentClass(Long id, String username, String password, String email, boolean isVerified){
         this.id = id;
-        this.uname = uname;
+        this.username = username;
         this.email = email;
         this.password = password;
         this.isVerified = isVerified;
     }
-    public Long getID(){
+    public Long getI(){
         return id;
     }
-    public String getuserName(){
-        return uname;
+    public String getUsername(){
+        return username;
     }
     public String getEmail(){
         return email;
@@ -33,8 +33,8 @@ public class StudentClass {
     public void setID(Long id){
         this.id = id;
     }
-    public void setUname(String uname){
-        this.uname = uname;
+    public void setUname(String username){
+        this.username = username;
     }
     public void setEmail(String email){
         this.email = email;
