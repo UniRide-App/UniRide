@@ -14,6 +14,7 @@ public class Driver extends Person {
     public void setCarType(String carType){
         this.cartype=carType;
     }
+    //GetCarType is implemented in the ride class so only the driver can access it. 
     public String getCarType(){
         return  cartype;
     }
