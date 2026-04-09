@@ -14,7 +14,7 @@ public class Ride {
     public Ride() {
 }
         public Ride(int id, StudentClass rider, String pickupLocation, String dropoffLocation,
-                    String status, double fare,Driver driver, Driver carType){
+                    String status, double fare,Driver driver){
             this.id = id;
             this.rider = rider;
             this.pickupLocation = pickupLocation;
@@ -34,6 +34,7 @@ public class Ride {
     public Driver getDriver(){
         return driver;
     }
+
      public String getCarType() {
         return driver.getCarType();
     }
