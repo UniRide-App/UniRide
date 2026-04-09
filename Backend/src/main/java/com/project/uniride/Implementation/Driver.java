@@ -1,13 +1,14 @@
 package com.project.uniride.Implementation;
 
 //Driver.java
-//Driver in the UniRide app
-//Hannah Lowery
+//defines the Driver in the UniRide app
+//class type: who they are
+//Author: Hannah Lowery
 
 public class Driver extends Person {
     String cartype;
-    public Driver(String name, String email, String school, int id, boolean isVerified, String password,String carType) {
-        super(name,email,school,id, isVerified,password); 
+    public Driver(String name, String email, String school, String password,String carType) {
+        super(name,email,school,password); 
         this.cartype=carType;
     }
     //SetCarType

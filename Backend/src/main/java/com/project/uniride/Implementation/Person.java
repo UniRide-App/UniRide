@@ -2,24 +2,27 @@ package com.project.uniride.Implementation;
 
 //Person.java
 //An abstract class that the Driver.java and Student.java can pull from
-//Hannah Lowery
+//Author: Hannah Lowery
 
 public abstract class Person {
-    //For the final inisitializations once the user sets it they cannot change it
-    private String name; //users name and car type
+    
+    private String name; 
     private final String email,school; //users school email and college
-    private final int id;  //users id
+    private final int id; 
+     private static int nextId = 1; //the id will increment everytime a new user is added
     private String password;
     private boolean isVerified;
 
     //Constructors
-    protected Person(String name, String email,String school,int id,boolean isVerified, String password){
+    protected Person(String name, String email,String school, String password){
+        
         this.name=name;
         this.email=email;
         this.school=school;
-        this.id=id;
+        this.id = nextId++;
         this.isVerified=isVerified;
         this.password=password;
+         this.isVerified = false;//user should always start without being verfied or it defeats the purpose of having verfication
     }
 
     public String getEmail() {

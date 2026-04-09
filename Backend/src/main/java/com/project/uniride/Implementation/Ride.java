@@ -1,38 +1,43 @@
 package com.project.uniride.Implementation;
 //Ride class to determine the ride for instance who is the driver, student, the cost of ride, car that will be driven, location.
+//class type: trip details
+
+//Author: Hannah Lowery, Jermiah Mckeey
 public class Ride {
-    private int id;
-    private StudentClass rider;
-    private Driver driver; 
+    private int rideID; //The overall rides ID
+    private int riderID; //Student rider ID
+    private int driverID; //Driver driver ID 
+    private Driver driver; //to get the drivers carType
 
     private String pickupLocation;
     private String dropoffLocation;
     private String status; //wheher the ride was complete or incomplete
 
     private double fare; //how much ride costs
+    private boolean studentWantsToTip;
 
     public Ride() {
 }
-        public Ride(int id, StudentClass rider, String pickupLocation, String dropoffLocation,
-                    String status, double fare,Driver driver){
-            this.id = id;
-            this.rider = rider;
+        public Ride(int rideID, int riderID, String pickupLocation, String dropoffLocation,
+                    String status, double fare,int driverID){
+            this.rideID = rideID;
+            this.riderID = riderID;
             this.pickupLocation = pickupLocation;
             this.dropoffLocation = dropoffLocation;
             this.status = status;
             this.fare = fare;
-            this.driver=driver;
+            this.driverID=driverID;
         }
 
         //Getters
-    public int getId() {
-        return id;
+    public int getRideID() {
+        return rideID;
     }
-    public StudentClass getRider(){
-        return rider;
+    public int getRider(){
+        return riderID;
     }
-    public Driver getDriver(){
-        return driver;
+    public int getDriver(){
+        return driverID;
     }
 
      public String getCarType() {
@@ -52,14 +57,14 @@ public class Ride {
     }
 
     //Setters
-    public void setId(int id){
-        this.id = id;
+    public void setRideID(int rideID){
+        this.rideID = rideID;
     }
-    public void setRider(StudentClass rider){
-        this.rider = rider;
+    public void setRider(Student rider){
+        this.riderID= rider.getId();
     }
     public void setDriver(Driver driver){
-        this.driver=driver;
+        this.driverID=driver.getId();
     }
     public void setPickupLocation(String pickupLocation){
         this.pickupLocation = pickupLocation;

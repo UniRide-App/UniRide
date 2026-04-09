@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 //Stores all of the ratings and averages them
-//Hannah Lowery
+//Author: Hannah Lowery
+//class details:  manages rides, tips, and ratings
 public class RatingService {
     private final List<Rating> ratings = new ArrayList<>();
       
