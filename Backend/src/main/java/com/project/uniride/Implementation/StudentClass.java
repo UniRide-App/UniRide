@@ -1,4 +1,4 @@
-package com.project.uniride;
+package com.project.uniride.Implementation;
 
 public class StudentClass {
     private Long id;
