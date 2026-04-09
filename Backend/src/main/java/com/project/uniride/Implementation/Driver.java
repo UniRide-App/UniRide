@@ -5,10 +5,17 @@ package com.project.uniride.Implementation;
 //Hannah Lowery
 
 public class Driver extends Person {
-
-
-    public Driver(String name, String email, String school, String carType, int id) {
-        super(name,email,school,carType,id); 
+    String cartype;
+    public Driver(String name, String email, String school, int id, boolean isVerified, String password,String carType) {
+        super(name,email,school,id, isVerified,password); 
+        this.cartype=carType;
+    }
+    //SetCarType
+    public void setCarType(String carType){
+        this.cartype=carType;
+    }
+    public String getCarType(){
+        return  cartype;
     }
 
 
