@@ -5,8 +5,7 @@ package com.project.uniride.Implementation;
 //Author: Jermiah Mckeey
 public class Student extends Person {
 
-    public Student(String name, String email, String school, String password) {
-        super(name,email,school,password); 
+    public Student(String firstName, String lastName,String email, String school, String password) {
+        super(firstName,lastName,email,school,password); 
     }
-
 }

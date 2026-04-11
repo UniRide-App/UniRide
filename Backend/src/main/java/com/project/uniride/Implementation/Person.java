@@ -6,7 +6,8 @@ package com.project.uniride.Implementation;
 
 public abstract class Person {
     
-    private String name; 
+    private String firstName; 
+    private String lastName; 
     private final String email,school; //users school email and college
     private final int id; 
      private static int nextId = 1; //the id will increment everytime a new user is added
@@ -14,13 +15,13 @@ public abstract class Person {
     private boolean isVerified;
 
     //Constructors
-    protected Person(String name, String email,String school, String password){
+    protected Person(String firstName, String lastName , String email,String school, String password){
         
-        this.name=name;
+        this.firstName=firstName;
+        this.lastName=lastName;
         this.email=email;
         this.school=school;
         this.id = nextId++;
-        this.isVerified=isVerified;
         this.password=password;
          this.isVerified = false;//user should always start without being verfied or it defeats the purpose of having verfication
     }
@@ -33,8 +34,12 @@ public abstract class Person {
         return school;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
+    }
+
+     public String getLastName() {
+        return lastName;
     }
     public boolean getIsVerfied(){
         return isVerified;
@@ -53,8 +58,12 @@ public abstract class Person {
         this.isVerified = isVerified;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public void setPassword(String password){

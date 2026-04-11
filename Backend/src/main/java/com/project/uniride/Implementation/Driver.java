@@ -7,8 +7,8 @@ package com.project.uniride.Implementation;
 
 public class Driver extends Person {
     String cartype;
-    public Driver(String name, String email, String school, String password,String carType) {
-        super(name,email,school,password); 
+    public Driver(String firstName, String lastName,String email, String school, String password,String carType) {
+        super(firstName,lastName,email,school,password); 
         this.cartype=carType;
     }
     //SetCarType
