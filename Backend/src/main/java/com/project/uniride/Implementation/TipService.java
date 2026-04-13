@@ -2,13 +2,13 @@ package com.project.uniride.Implementation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 //RideService creates tips if Student wants to tip
 //Author: Hannah Lowery
 //class details: manages rides, ratings, and tips
 
-@Component
+@Service
 public class TipService {
      private List<Tip> tips = new ArrayList<>();
 

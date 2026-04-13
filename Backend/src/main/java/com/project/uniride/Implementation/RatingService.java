@@ -3,13 +3,13 @@ package com.project.uniride.Implementation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 //Stores all of the ratings and averages them
 //Author: Hannah Lowery
 //class details:  manages rides, tips, and ratings
 
-@Component
+@Service
 public class RatingService {
     private final List<Rating> ratings = new ArrayList<>();
       

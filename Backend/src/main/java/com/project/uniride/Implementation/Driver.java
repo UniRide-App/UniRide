@@ -1,12 +1,8 @@
 package com.project.uniride.Implementation;
-
-import org.springframework.stereotype.Component;
-
-//Driver.java
 //defines the Driver in the UniRide app
 //class type: who they are
 //Author: Hannah Lowery
-@Component
+
 public class Driver extends Person {
     private Car car;
     public Driver(String firstName, String lastName,String email, String school, String password, Car car) {
