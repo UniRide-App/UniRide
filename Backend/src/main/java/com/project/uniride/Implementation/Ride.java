@@ -1,20 +1,28 @@
 package com.project.uniride.Implementation;
 //Ride class to determine the ride for instance who is the driver, student, the cost of ride, car that will be driven, location.
 //class type: trip details
+//Author: Hannah Lowry, Jeremiah Mckeey
 
-//Author: Hannah Lowery, Jermiah Mckeey
+import org.springframework.stereotype.Component;
+
+@Component
 public class Ride {
     private int rideID; //The overall rides ID
     private int riderID; //Student rider ID
     private int driverID; //Driver driver ID 
-    private Driver driver; //to get the drivers carType
+   
 
     private String pickupLocation;
     private String dropoffLocation;
     private String status; //wheher the ride was complete or incomplete
 
     private double fare; //how much ride costs
-    private boolean studentWantsToTip;
+    
+    private String carBrand;      
+    private String carModel;      
+    private String carColor;      
+    private String licensePlate; 
+    private int carYear;      
 
     public Ride() {
 }
@@ -40,9 +48,6 @@ public class Ride {
         return driverID;
     }
 
-     public String getCarType() {
-        return driver.getCarType();
-    }
     public String getPickupLocation(){
         return pickupLocation;
     }
@@ -56,6 +61,25 @@ public class Ride {
         return fare;
     }
 
+    public String getCarBrand() 
+    { return carBrand; 
+
+    }
+    public String getCarModel() { 
+        return carModel; 
+    }
+    public String getCarColor() { 
+        return carColor; 
+    }
+    public String getLicensePlate() 
+    { return licensePlate; 
+
+    }
+    public int getCarYear() { 
+        return carYear; 
+    }
+
+
     //Setters
     public void setRideID(int rideID){
         this.rideID = rideID;
@@ -63,9 +87,15 @@ public class Ride {
     public void setRider(Student rider){
         this.riderID= rider.getId();
     }
-    public void setDriver(Driver driver){
-        this.driverID=driver.getId();
+     public void setDriver(Driver driver) {
+        this.driverID = driver.getId();
+        this.carBrand = driver.getCar().getBrand();
+        this.carModel = driver.getCar().getModel();
+        this.carColor = driver.getCar().getColor();
+        this.licensePlate = driver.getCar().getLicensePlateNumber();
+        this.carYear = driver.getCar().getModelYear();
     }
+
     public void setPickupLocation(String pickupLocation){
         this.pickupLocation = pickupLocation;
     }

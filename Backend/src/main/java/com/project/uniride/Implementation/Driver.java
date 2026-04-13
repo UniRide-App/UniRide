@@ -1,29 +1,26 @@
 package com.project.uniride.Implementation;
 
+import org.springframework.stereotype.Component;
+
 //Driver.java
 //defines the Driver in the UniRide app
 //class type: who they are
 //Author: Hannah Lowery
-
+@Component
 public class Driver extends Person {
-    String cartype;
-    public Driver(String firstName, String lastName,String email, String school, String password,String carType) {
+    private Car car;
+    public Driver(String firstName, String lastName,String email, String school, String password, Car car) {
         super(firstName,lastName,email,school,password); 
-        this.cartype=carType;
+        this.car=car;
     }
-    //SetCarType
-    public void setCarType(String carType){
-        this.cartype=carType;
+    //getters
+   public Car getCar() 
+   { return car; 
+
+   }
+   //setters
+    public void setCar(Car car) { 
+        this.car = car; 
     }
-    //GetCarType is implemented in the ride class so only the driver can access it. 
-    public String getCarType(){
-        return  cartype;
-    }
-
-
-
-
-    
-    
     
 }
