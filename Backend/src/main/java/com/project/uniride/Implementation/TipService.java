@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class TipService {
      private List<Tip> tips = new ArrayList<>();
 
-   public void completeRide(Ride ride, Driver driver, Student student, 
+   public void completeRide(Ride ride, StudentDriver driver, StudentPassenger student, 
                          boolean studentWantsToTip, double tipAmount) {
         ride.setStatus("Complete");
 

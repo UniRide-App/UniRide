@@ -84,10 +84,10 @@ public class Ride {
     public void setRideID(Long rideID){
         this.rideID = rideID;
     }
-    public void setRider(Student rider){
+    public void setRider(StudentPassenger rider){
         this.riderID= rider.getId();
     }
-     public void setDriver(Driver driver) {
+     public void setDriver(StudentDriver driver) {
         this.driverID = driver.getId();
         this.carBrand = driver.getCar().getBrand();
         this.carModel = driver.getCar().getModel();

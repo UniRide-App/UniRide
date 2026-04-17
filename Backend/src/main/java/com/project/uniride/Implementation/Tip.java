@@ -10,7 +10,7 @@ public class Tip {
     private Long studentID;
     private double tipAmount;
 
-    public Tip(Ride ride, Driver driver, Student student, double tipAmount) {
+    public Tip(Ride ride, StudentDriver driver, StudentPassenger student, double tipAmount) {
         this.rideID = ride.getRideID();
         this.driverID = driver.getId();
         this.studentID = student.getId();

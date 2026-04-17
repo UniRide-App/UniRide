@@ -9,8 +9,6 @@ public abstract class Person {
     private String firstName; 
     private String lastName; 
     private final String email,school; 
-    private final Long id; 
-    private static Long nextId = 1L; 
     private String password;
     private boolean isVerified;
 
@@ -21,9 +19,7 @@ public abstract class Person {
         this.lastName=lastName;
         this.email=email;
         this.school=school;
-        this.id = nextId++;
         this.password=password;
-         this.isVerified = false;//user should always start without being verfied or it defeats the purpose of having verfication
     }
 
     public String getEmail() {

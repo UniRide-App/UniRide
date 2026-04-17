@@ -3,9 +3,9 @@ package com.project.uniride.Implementation;
 //Author: Jermiah Mckeey
 
 
-public class Student extends Person {
+public class StudentPassenger extends Person {
 
-    public Student(String firstName, String lastName,String email, String school, String password) {
+    public StudentPassenger(String firstName, String lastName,String email, String school, String password) {
         super(firstName,lastName,email,school,password); 
     }
 }

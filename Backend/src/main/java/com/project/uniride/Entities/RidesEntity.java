@@ -16,9 +16,9 @@ public class RidesEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int studentID;   
-    private int driverID;   
-    private int carID;       
+    private Long studentID;   
+    private Long driverID;   
+    private Long carID;       
     private String pickupLocation;
     private String dropoffLocation;
     private double fare;
@@ -29,7 +29,7 @@ public class RidesEntity {
 
     public RidesEntity(){}
 
-    public RidesEntity(int studentID, int driverID, int carID, String pickupLocation, String dropoffLocation, double fare,
+    public RidesEntity(Long studentID, Long driverID, Long carID, String pickupLocation, String dropoffLocation, double fare,
         String status, double tipAmount, int studentRating,int driverRating){
             this.studentID=studentID;
             this.driverID=driverID;
@@ -47,15 +47,15 @@ public class RidesEntity {
          public Long getID(){
         return id;
     }
-        public int getStudentID(){
+        public Long getStudentID(){
             return studentID;
         }
 
-        public int getDriverID(){
+        public Long getDriverID(){
             return driverID;
         }
 
-        public int getCarID(){
+        public Long getCarID(){
             return carID;
         }
 
@@ -88,15 +88,15 @@ public class RidesEntity {
         }
 
         //setters
-         public void setStudentID(int studentID){
+         public void setStudentID(Long studentID){
             this.studentID=studentID;
         }
 
-        public void setDriverID(int driverID){
+        public void setDriverID(Long driverID){
             this.driverID=driverID;
         }
 
-        public void setCarID(int carID){
+        public void setCarID(Long carID){
             this.carID=carID;
         }
 

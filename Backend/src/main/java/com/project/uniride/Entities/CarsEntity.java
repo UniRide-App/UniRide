@@ -16,7 +16,7 @@ public class CarsEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private int driverID;  
+    private Long driverID;  
     private String brand;
     private String model;
     private String color;
@@ -25,7 +25,7 @@ public class CarsEntity {
 
     public CarsEntity(){}
 
-    public CarsEntity(int driverID, String brand, String model, String color, String licensePlate, int modelYear){
+    public CarsEntity(Long driverID, String brand, String model, String color, String licensePlate, int modelYear){
         super();
         this.driverID=driverID;
         this.brand=brand;
@@ -40,7 +40,7 @@ public class CarsEntity {
         return id;
     }
     
-    public int getDriverID(){
+    public Long getDriverID(){
         return driverID;
     }
     public String getBrand(){
@@ -60,7 +60,7 @@ public class CarsEntity {
     }
 
     //setters
-      public void setDriverID(int driverID){
+      public void setDriverID(Long driverID){
         this.driverID=driverID;
     }
 
@@ -76,7 +76,7 @@ public class CarsEntity {
     public void setLicensePlate(String licensePlate){
         this.licensePlate=licensePlate;
     }
-    public void getModelYear(int modelYear){
+    public void setModelYear(int modelYear){
         this.modelYear=modelYear;
     }
 }
