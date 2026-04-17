@@ -25,15 +25,7 @@ public class BasicAuth {
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }
-    @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder){
-        UserDetails user = User.builder()
-                .username("student1")
-                .password(passwordEncoder.encode("password123"))
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(user);
-    }
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();

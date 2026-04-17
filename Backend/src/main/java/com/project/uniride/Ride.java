@@ -2,7 +2,7 @@ package com.project.uniride;
 
 public class Ride {
     private Long id;
-    private StudentClass rider;
+    private StudentPassenger rider;
 
     private String pickupLocation;
     private String dropoffLocation;
@@ -11,7 +11,7 @@ public class Ride {
 
     public Ride() {
 }
-        public Ride(Long id, StudentClass rider, String pickupLocation, String dropoffLocation,
+        public Ride(Long id, StudentPassenger rider, String pickupLocation, String dropoffLocation,
                     String status, double fare){
             this.id = id;
             this.rider = rider;
@@ -24,7 +24,7 @@ public class Ride {
     public Long getId() {
         return id;
     }
-    public StudentClass getRider(){
+    public StudentPassenger getRider(){
         return rider;
     }
     public String getPickupLocation(){
@@ -42,7 +42,7 @@ public class Ride {
     public void setId(Long id){
         this.id = id;
     }
-    public void setRider(StudentClass rider){
+    public void setRider(StudentPassenger rider){
         this.rider = rider;
     }
     public void setPickupLocation(String pickupLocation){

@@ -1,14 +1,14 @@
 package com.project.uniride;
 
-public class StudentClass {
+public class StudentPassenger {
     private Long id;
     private String username;
     private String password;
     private String email;
     private boolean isVerified;
 
-    public StudentClass(){}
-    public StudentClass(Long id, String username, String password, String email, boolean isVerified){
+    public StudentPassenger(){}
+    public StudentPassenger(Long id, String username, String password, String email, boolean isVerified){
         this.id = id;
         this.username = username;
         this.email = email;
