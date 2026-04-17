@@ -5,7 +5,7 @@ package com.project.uniride.Implementation;
 //Class detials: a single rating event
 //Author: Hannah Lowery
 
- record Rating(int studentID,int driverID, int stars, RatingType type){
+ record Rating(int studentPassengerID,int studentDriverID, int stars, RatingType type){
     Rating {
         if (stars < 1 || stars > 5)
             throw new IllegalArgumentException("Rating must be 1–5");

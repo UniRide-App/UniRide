@@ -1,13 +1,17 @@
 package com.project.uniride.Entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 //Author: Hannah Lowery
 //Maps to database
+//has a manytoOne relationship so the car can only have one StudentDriver
 
 @Entity
 @Table(name = "Cars")
@@ -15,19 +19,22 @@ public class CarsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    private Long driverID;  
+   
     private String brand;
     private String model;
     private String color;
     private String licensePlate;
     private int modelYear;
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="studentDriverID")
+    private StudentDriverEntity studentDriver;
+
     public CarsEntity(){}
 
-    public CarsEntity(Long driverID, String brand, String model, String color, String licensePlate, int modelYear){
+    public CarsEntity(StudentDriverEntity studentDriver, String brand, String model, String color, String licensePlate, int modelYear){
         super();
-        this.driverID=driverID;
+        this.studentDriver=studentDriver;
         this.brand=brand;
         this.model=model;
         this.color=color;
@@ -40,9 +47,6 @@ public class CarsEntity {
         return id;
     }
     
-    public Long getDriverID(){
-        return driverID;
-    }
     public String getBrand(){
         return brand;
     }
@@ -60,9 +64,6 @@ public class CarsEntity {
     }
 
     //setters
-      public void setDriverID(Long driverID){
-        this.driverID=driverID;
-    }
 
     public void setBrand(String brand){
         this.brand=brand;
@@ -78,5 +79,14 @@ public class CarsEntity {
     }
     public void setModelYear(int modelYear){
         this.modelYear=modelYear;
+    }
+
+    //getters and setters for StudentDriver
+    public StudentDriverEntity getStudentDriver(){
+        return studentDriver;
+    }
+
+    public void setStudentDriver(StudentDriverEntity studentDriver){
+        this.studentDriver=studentDriver;
     }
 }

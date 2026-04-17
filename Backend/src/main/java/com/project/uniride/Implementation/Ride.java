@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class Ride {
     private Long rideID; //The overall rides ID
-    private Long riderID; //Student rider ID
-    private Long driverID; //Driver driver ID 
+    private Long studentPassengerID; //Student rider ID
+    private Long studentDriverID; //Driver driver ID 
    
 
     private String pickupLocation;
@@ -18,34 +18,30 @@ public class Ride {
 
     private double fare; //how much ride costs
     
-    private String carBrand;      
-    private String carModel;      
-    private String carColor;      
-    private String licensePlate; 
-    private int carYear;      
+   private Car car;      
 
     public Ride() {
 }
-        public Ride(Long rideID, Long riderID, String pickupLocation, String dropoffLocation,
-                    String status, double fare,Long driverID){
+        public Ride(Long rideID, Long studentPassengerID, String pickupLocation, String dropoffLocation,
+                    String status, double fare,Long studentDriverID){
             this.rideID = rideID;
-            this.riderID = riderID;
+            this.studentPassengerID = studentPassengerID;
             this.pickupLocation = pickupLocation;
             this.dropoffLocation = dropoffLocation;
             this.status = status;
             this.fare = fare;
-            this.driverID=driverID;
+            this.studentDriverID=studentDriverID;
         }
 
         //Getters
     public Long getRideID() {
         return rideID;
     }
-    public Long getRider(){
-        return riderID;
+    public Long getStudentPassengerID(){
+        return studentPassengerID;
     }
-    public Long getDriver(){
-        return driverID;
+    public Long getStudentDriverID(){
+        return studentDriverID;
     }
 
     public String getPickupLocation(){
@@ -61,39 +57,21 @@ public class Ride {
         return fare;
     }
 
-    public String getCarBrand() 
-    { return carBrand; 
-
-    }
-    public String getCarModel() { 
-        return carModel; 
-    }
-    public String getCarColor() { 
-        return carColor; 
-    }
-    public String getLicensePlate() 
-    { return licensePlate; 
-
-    }
-    public int getCarYear() { 
-        return carYear; 
-    }
+   public Car getCar() {
+    return car;
+}
 
 
     //Setters
     public void setRideID(Long rideID){
         this.rideID = rideID;
     }
-    public void setRider(StudentPassenger rider){
-        this.riderID= rider.getId();
+    public void setRider(StudentPassenger passenger){
+        this.studentPassengerID= passenger.getId();
     }
      public void setDriver(StudentDriver driver) {
-        this.driverID = driver.getId();
-        this.carBrand = driver.getCar().getBrand();
-        this.carModel = driver.getCar().getModel();
-        this.carColor = driver.getCar().getColor();
-        this.licensePlate = driver.getCar().getLicensePlateNumber();
-        this.carYear = driver.getCar().getModelYear();
+        this.studentDriverID = driver.getId();
+        this.car=driver.getCar();
     }
 
     public void setPickupLocation(String pickupLocation){

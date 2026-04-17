@@ -1,10 +1,15 @@
 package com.project.uniride.Entities;
 
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 //Author: Hannah Lowery
@@ -21,13 +26,20 @@ public class StudentPassengerEntity {
     private String lastName;
     private String email;
     private String school;
+    @Column(name="StudentPassengerpassword")
     private String password;
     
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentPassenger")
+    private List<RidesEntity> rides;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentPassenger")
+    private List<RatingsEntity> ratings;
 
     public StudentPassengerEntity(){
     }
 
     public StudentPassengerEntity(String firstName, String lastName, String email,String school, String password){
+        super();
         this.firstName=firstName;
         this.lastName=lastName;
         this.email=email;
@@ -73,5 +85,20 @@ public class StudentPassengerEntity {
     }
     public void setPassword(String password){
         this.password= password;
+    }
+
+    //getter and setter for entity
+    public List<RidesEntity> getRides(){
+        return rides;
+    }
+    public void setRides(List <RidesEntity> rides){
+    this.rides=rides;
+    }
+    
+      public List<RatingsEntity> getRating(){
+        return ratings;
+    }
+    public void setRatings(List <RatingsEntity> ratings){
+    this.ratings=ratings;
     }
 }

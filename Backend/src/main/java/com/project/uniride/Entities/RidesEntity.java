@@ -1,9 +1,12 @@
 package com.project.uniride.Entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 //Author: Hannah Lowery
@@ -16,47 +19,54 @@ public class RidesEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long studentPassengerID;   
-    private Long studentDriverID;   
-    private Long carID;       
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="StudentPassengerID")
+    private StudentPassengerEntity studentPassenger;   
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="StudentDriverID")
+    private StudentDriverEntity studentDriver;  
+    
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="CarID")
+    private CarsEntity car;  
+
     private String pickupLocation;
     private String dropoffLocation;
     private double fare;
     private String status;
-    private double tipAmount;     
-    private int studentPassengerRating;
-    private int studentDriverRating; 
+   
 
     public RidesEntity(){}
 
-    public RidesEntity(Long studentPassengerID, Long studentDriverID, Long carID, String pickupLocation, String dropoffLocation, double fare,
-        String status, double tipAmount, int studentPassengerRating,int studentDriverRating){
-            this.studentPassengerID=studentPassengerID;
-            this.studentDriverID=studentDriverID;
-            this.carID=carID;
+    public RidesEntity(StudentPassengerEntity studentPassenger, StudentDriverEntity studentDriver, CarsEntity car, String pickupLocation, String dropoffLocation, double fare,
+        String status){
+            super();
+            
+            this.studentPassenger=studentPassenger;
+            this.studentDriver=studentDriver;
+            this.car=car;
+
             this.pickupLocation=pickupLocation;
             this.dropoffLocation=dropoffLocation;
             this.fare=fare;
             this.status=status;
-            this.tipAmount=tipAmount;
-            this.studentPassengerRating=studentPassengerRating;
-            this.studentDriverRating=studentDriverRating;
         }
 
         //getters
          public Long getID(){
         return id;
     }
-        public Long getStudentPassengerID(){
-            return studentPassengerID;
+        public StudentPassengerEntity getStudentPassengerID(){
+            return studentPassenger;
         }
 
-        public Long getStudentDriverID(){
-            return studentDriverID;
+        public StudentDriverEntity getStudentDriverID(){
+            return studentDriver;
         }
 
-        public Long getCarID(){
-            return carID;
+        public CarsEntity getCarID(){
+            return car;
         }
 
         public String getPickupLocation(){
@@ -75,29 +85,18 @@ public class RidesEntity {
             return status;
         }
 
-        public double getTipAmount(){
-            return tipAmount;
-        }
-
-        public int getStudentPassengerRating(){
-            return studentPassengerRating;
-        }
-
-        public int getStudentDriverRating(){
-            return studentDriverRating;
-        }
 
         //setters
-         public void setStudentID(Long studentPassengerID){
-            this.studentPassengerID=studentPassengerID;
+         public void setStudentPassengerID(StudentPassengerEntity studentPassenger){
+            this.studentPassenger=studentPassenger;
         }
 
-        public void setDriverID(Long studentDriverID){
-            this.studentDriverID=studentDriverID;
+        public void setStudentDriverID(StudentDriverEntity studentDriver){
+            this.studentDriver=studentDriver;
         }
 
-        public void setCarID(Long carID){
-            this.carID=carID;
+        public void setCarID(CarsEntity car){
+            this.car=car;
         }
 
         public void setPickupLocation(String pickupLocation){
@@ -116,15 +115,4 @@ public class RidesEntity {
             this.status=status;
         }
 
-        public void setTipAmount(double tipAmount){
-            this.tipAmount=tipAmount;
-        }
-
-        public void setStudentPassengerRating(int studentPassengerRating){
-            this.studentPassengerRating=studentPassengerRating;
-        }
-
-        public void setDriverRating(int studentDriverRating){
-            this.studentDriverRating=studentDriverRating;
-        }
 }

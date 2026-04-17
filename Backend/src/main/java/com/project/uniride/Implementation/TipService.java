@@ -28,35 +28,35 @@ public class TipService {
     }
 
      //  amount of tips a student passenger have given over time
-    public double getStudentOverallTipAmount(int studentID) {
+    public double getStudentOverallTipAmount(Long studentID) {
         return tips.stream()
-            .filter(t -> t.getStudentID() == studentID)
+            .filter(t -> t.getStudentID().equals(studentID))
             .mapToDouble(Tip::getTipAmount)
             .sum();
            
     }
 
     //amount of tips a student driver has recieved over time
-    public double getDriverOverallTipRecieved(int driverID) {
+    public double getDriverOverallTipRecieved(Long driverID) {
     return tips.stream()
-            .filter(t -> t.getDriverID()== driverID)
+            .filter(t -> t.getDriverID().equals(driverID))
             .mapToDouble(Tip::getTipAmount)
             .sum();
     }
 
     //the average tip amount a student driver has recieved
-    public double getDriverAverageTipRecieved(int driverID) {
+    public double getDriverAverageTipRecieved(Long driverID) {
     return tips.stream()
-            .filter(t -> t.getDriverID() == driverID)
+            .filter(t -> t.getDriverID().equals(driverID))
             .mapToDouble(Tip::getTipAmount)
             .average()
             .orElse(0.0);
     }
 
      //the average tip amount a student passenger has given
-    public double getStudentAverageTipAmount(int studentID) {
+    public double getStudentAverageTipAmount(Long studentID) {
         return tips.stream()
-            .filter(t -> t.getStudentID() == studentID)
+            .filter(t -> t.getStudentID().equals(studentID))
             .mapToDouble(Tip::getTipAmount)
            .average()
            .orElse(0.0);

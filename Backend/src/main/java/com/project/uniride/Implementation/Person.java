@@ -12,6 +12,9 @@ public abstract class Person {
     private String password;
     private boolean isVerified;
 
+    private Long id;
+    private long nextID;
+
     //Constructors
     protected Person(String firstName, String lastName , String email,String school, String password){
         
@@ -20,6 +23,7 @@ public abstract class Person {
         this.email=email;
         this.school=school;
         this.password=password;
+        this.id=nextID++;
     }
 
     public String getEmail() {
