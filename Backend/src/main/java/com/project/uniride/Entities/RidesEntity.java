@@ -16,43 +16,43 @@ public class RidesEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long studentID;   
-    private Long driverID;   
+    private Long studentPassengerID;   
+    private Long studentDriverID;   
     private Long carID;       
     private String pickupLocation;
     private String dropoffLocation;
     private double fare;
     private String status;
     private double tipAmount;     
-    private int studentRating;
-    private int driverRating; 
+    private int studentPassengerRating;
+    private int studentDriverRating; 
 
     public RidesEntity(){}
 
-    public RidesEntity(Long studentID, Long driverID, Long carID, String pickupLocation, String dropoffLocation, double fare,
-        String status, double tipAmount, int studentRating,int driverRating){
-            this.studentID=studentID;
-            this.driverID=driverID;
+    public RidesEntity(Long studentPassengerID, Long studentDriverID, Long carID, String pickupLocation, String dropoffLocation, double fare,
+        String status, double tipAmount, int studentPassengerRating,int studentDriverRating){
+            this.studentPassengerID=studentPassengerID;
+            this.studentDriverID=studentDriverID;
             this.carID=carID;
             this.pickupLocation=pickupLocation;
             this.dropoffLocation=dropoffLocation;
             this.fare=fare;
             this.status=status;
             this.tipAmount=tipAmount;
-            this.studentRating=studentRating;
-            this.driverRating=driverRating;
+            this.studentPassengerRating=studentPassengerRating;
+            this.studentDriverRating=studentDriverRating;
         }
 
         //getters
          public Long getID(){
         return id;
     }
-        public Long getStudentID(){
-            return studentID;
+        public Long getStudentPassengerID(){
+            return studentPassengerID;
         }
 
-        public Long getDriverID(){
-            return driverID;
+        public Long getStudentDriverID(){
+            return studentDriverID;
         }
 
         public Long getCarID(){
@@ -79,21 +79,21 @@ public class RidesEntity {
             return tipAmount;
         }
 
-        public int getStudentRating(){
-            return studentRating;
+        public int getStudentPassengerRating(){
+            return studentPassengerRating;
         }
 
-        public int getDriverRating(){
-            return driverRating;
+        public int getStudentDriverRating(){
+            return studentDriverRating;
         }
 
         //setters
-         public void setStudentID(Long studentID){
-            this.studentID=studentID;
+         public void setStudentID(Long studentPassengerID){
+            this.studentPassengerID=studentPassengerID;
         }
 
-        public void setDriverID(Long driverID){
-            this.driverID=driverID;
+        public void setDriverID(Long studentDriverID){
+            this.studentDriverID=studentDriverID;
         }
 
         public void setCarID(Long carID){
@@ -120,11 +120,11 @@ public class RidesEntity {
             this.tipAmount=tipAmount;
         }
 
-        public void setStudentRating(int studentRating){
-            this.studentRating=studentRating;
+        public void setStudentPassengerRating(int studentPassengerRating){
+            this.studentPassengerRating=studentPassengerRating;
         }
 
-        public void setDriverRating(int driverRating){
-            this.driverRating=driverRating;
+        public void setDriverRating(int studentDriverRating){
+            this.studentDriverRating=studentDriverRating;
         }
 }
