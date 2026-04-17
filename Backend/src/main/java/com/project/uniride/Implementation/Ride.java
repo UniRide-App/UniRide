@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Ride {
-    private int rideID; //The overall rides ID
-    private int riderID; //Student rider ID
-    private int driverID; //Driver driver ID 
+    private Long rideID; //The overall rides ID
+    private Long riderID; //Student rider ID
+    private Long driverID; //Driver driver ID 
    
 
     private String pickupLocation;
@@ -26,8 +26,8 @@ public class Ride {
 
     public Ride() {
 }
-        public Ride(int rideID, int riderID, String pickupLocation, String dropoffLocation,
-                    String status, double fare,int driverID){
+        public Ride(Long rideID, Long riderID, String pickupLocation, String dropoffLocation,
+                    String status, double fare,Long driverID){
             this.rideID = rideID;
             this.riderID = riderID;
             this.pickupLocation = pickupLocation;
@@ -38,13 +38,13 @@ public class Ride {
         }
 
         //Getters
-    public int getRideID() {
+    public Long getRideID() {
         return rideID;
     }
-    public int getRider(){
+    public Long getRider(){
         return riderID;
     }
-    public int getDriver(){
+    public Long getDriver(){
         return driverID;
     }
 
@@ -81,7 +81,7 @@ public class Ride {
 
 
     //Setters
-    public void setRideID(int rideID){
+    public void setRideID(Long rideID){
         this.rideID = rideID;
     }
     public void setRider(Student rider){

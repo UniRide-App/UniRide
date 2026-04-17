@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 public class UsersEntity {
    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     
     private String firstName;
     private String lastName;
@@ -34,6 +34,10 @@ public class UsersEntity {
     }
 
     //getters
+     public Long getID(){
+        return id;
+    }
+
     public String getFirstName(){
         return firstName;
     }

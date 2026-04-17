@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 public class CarsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     
     private int driverID;  
     private String brand;
@@ -36,7 +36,7 @@ public class CarsEntity {
     }
 
     //getters
-    public int getID(){
+    public Long getID(){
         return id;
     }
     

@@ -5,9 +5,9 @@ package com.project.uniride.Implementation;
 //Author: Hannah Lowery
 //class detials: a single tip event
 public class Tip {
-    private int rideID;
-    private int driverID;
-    private int studentID;
+    private Long rideID;
+    private Long driverID;
+    private Long studentID;
     private double tipAmount;
 
     public Tip(Ride ride, Driver driver, Student student, double tipAmount) {
@@ -17,15 +17,15 @@ public class Tip {
         this.tipAmount = tipAmount;
     }
 
-    public int getRideID() 
+    public Long getRideID() 
     { return rideID;
 
      }
-    public int getDriverID() 
+    public Long getDriverID() 
     { 
         return driverID; 
     }
-    public int getStudentID() 
+    public Long getStudentID() 
     { return studentID;
         
     }

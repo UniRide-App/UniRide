@@ -8,9 +8,9 @@ public abstract class Person {
     
     private String firstName; 
     private String lastName; 
-    private final String email,school; //users school email and college
-    private final int id; 
-     private static int nextId = 1; //the id will increment everytime a new user is added
+    private final String email,school; 
+    private final Long id; 
+    private static Long nextId = 1L; 
     private String password;
     private boolean isVerified;
 
@@ -45,7 +45,7 @@ public abstract class Person {
         return isVerified;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
