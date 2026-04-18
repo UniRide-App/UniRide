@@ -1,5 +1,9 @@
 package com.project.uniride.Repositories;
 
-public interface  RatingsRepository {
+import org.springframework.data.repository.CrudRepository;
+
+import com.project.uniride.Entities.RatingsEntity;
+
+public interface  RatingsRepository extends CrudRepository<RatingsEntity, Long>{
     
 }

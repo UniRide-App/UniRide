@@ -1,5 +1,7 @@
 package com.project.uniride.Entities;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -33,13 +35,13 @@ public class RidesEntity {
 
     private String pickupLocation;
     private String dropoffLocation;
-    private double fare;
+    private BigDecimal fare;
     private String status;
    
 
     public RidesEntity(){}
 
-    public RidesEntity(StudentPassengerEntity studentPassenger, StudentDriverEntity studentDriver, CarsEntity car, String pickupLocation, String dropoffLocation, double fare,
+    public RidesEntity(StudentPassengerEntity studentPassenger, StudentDriverEntity studentDriver, CarsEntity car, String pickupLocation, String dropoffLocation, BigDecimal fare,
         String status){
             super();
             
@@ -77,7 +79,7 @@ public class RidesEntity {
             return dropoffLocation;
         }
 
-        public double getFare(){
+        public BigDecimal getFare(){
             return fare;
         }
 
@@ -107,7 +109,7 @@ public class RidesEntity {
             this.dropoffLocation=dropoffLocation;
         }
 
-        public void setFare(double fare){
+        public void setFare(BigDecimal fare){
             this.fare=fare;
         }
 

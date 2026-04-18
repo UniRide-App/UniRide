@@ -1,6 +1,8 @@
 package com.project.uniride.Entities;
 
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -32,14 +34,14 @@ public class TipsEntity {
     @JoinColumn(name = "studentPassengerID")
     private StudentPassengerEntity studentPassenger;
 
-    private double tipAmount;
+    private BigDecimal tipAmount;
     
     
 
     public TipsEntity(){
     }
 
-    public TipsEntity(RidesEntity ride, StudentDriverEntity studentDriver, StudentPassengerEntity studentPassenger, double tipAmount){
+    public TipsEntity(RidesEntity ride, StudentDriverEntity studentDriver, StudentPassengerEntity studentPassenger, BigDecimal tipAmount){
         super();
         this.ride=ride;
         this.studentDriver=studentDriver;
@@ -62,7 +64,7 @@ public class TipsEntity {
     public StudentPassengerEntity getStudentPassengerID(){
         return studentPassenger;
     }
-    public double getTipAmount(){
+    public BigDecimal getTipAmount(){
         return tipAmount;
     }
     
@@ -78,7 +80,7 @@ public class TipsEntity {
     public void setStudentPassenger(StudentPassengerEntity studentPassenger){
         this.studentPassenger=studentPassenger;
     }
-    public void setTipAmount(double tipAmount){
+    public void setTipAmount(BigDecimal tipAmount){
         this.tipAmount=tipAmount;
     }
 }

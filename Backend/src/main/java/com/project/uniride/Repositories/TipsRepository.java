@@ -1,5 +1,9 @@
 package com.project.uniride.Repositories;
 
-public interface TipsRepository {
+import org.springframework.data.repository.CrudRepository;
+
+import com.project.uniride.Entities.TipsEntity;
+
+public interface TipsRepository extends CrudRepository<TipsEntity, Long>{
     
 }
