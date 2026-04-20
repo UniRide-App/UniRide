@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Spring Boot sensitive files
+Backend/src/main/resources/application.properties

@@ -1,0 +1,10 @@
+spring.application.name=uniride
+
+spring.datasource.url=spring.datasource.url=jdbc:mysql://localhost:3306/UniRide
+spring.datasource.username=root
+spring.datasource.password=
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.generate-ddl=true
+spring.jpa.hibernate.ddl-auto=validate
+
+spring.jpa.properties.hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

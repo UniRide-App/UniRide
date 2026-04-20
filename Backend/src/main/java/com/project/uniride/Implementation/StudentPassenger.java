@@ -1,48 +1,11 @@
 package com.project.uniride.Implementation;
+//class type: who they are
+//Author: Jermiah Mckeey
 
-public class StudentPassenger {
-    private Long id;
-    private String username;
-    private String password;
-    private String email;
-    private boolean isVerified;
 
-    public StudentPassenger(){}
-    public StudentPassenger(Long id, String username, String password, String email, boolean isVerified){
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.isVerified = isVerified;
-    }
-    public Long getI(){
-        return id;
-    }
-    public String getUsername(){
-        return username;
-    }
-    public String getEmail(){
-        return email;
-    }
-    public String getPassword(){
-        return password;
-    }
-    public boolean isVerified(){
-        return isVerified;
-    }
-    public void setID(Long id){
-        this.id = id;
-    }
-    public void setUname(String username){
-        this.username = username;
-    }
-    public void setEmail(String email){
-        this.email = email;
-    }
-    public void setPassword(String password){
-        this.password = password;
-    }
-    public void setVerified(boolean verified){
-        isVerified = verified;
+public class StudentPassenger extends Person {
+
+    public StudentPassenger(String firstName, String lastName,String email, String school, String password) {
+        super(firstName,lastName,email,school,password); 
     }
 }
