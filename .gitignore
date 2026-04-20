@@ -1,0 +1,9 @@
+node_modules/
+target/
+*.class
+.idea/
+.mvn/
+*.jar
+.DS_Store
+Thumbs.db
+uniride-frontend/build/
