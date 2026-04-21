@@ -8,3 +8,5 @@ spring.jpa.generate-ddl=true
 spring.jpa.hibernate.ddl-auto=validate
 
 spring.jpa.properties.hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+spring.data.rest.basePath=/api

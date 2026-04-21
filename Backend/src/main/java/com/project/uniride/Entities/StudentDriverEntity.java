@@ -3,6 +3,9 @@ package com.project.uniride.Entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,6 +21,7 @@ import jakarta.persistence.Table;
 //has a OnetoMany relationship so the StudentDriver can have many cars
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 @Table(name = "StudentDriver")
 public class StudentDriverEntity {
    @Id
@@ -32,15 +36,19 @@ public class StudentDriverEntity {
     @Column(name="StudentDriverpassword")
     private String password;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentDriver")
     private List <CarsEntity> cars;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentDriver")
     private List<RidesEntity> rides;
     
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentDriver")
     private List<TipsEntity> tips;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentDriver")
     private List<RatingsEntity> ratings;
 

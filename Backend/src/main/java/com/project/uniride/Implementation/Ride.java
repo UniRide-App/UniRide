@@ -7,16 +7,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Ride {
-    private Long rideID; //The overall rides ID
-    private Long studentPassengerID; //Student rider ID
-    private Long studentDriverID; //Driver driver ID 
+    private Long rideID; 
+    private Long studentPassengerID; 
+    private Long studentDriverID; 
    
 
     private String pickupLocation;
     private String dropoffLocation;
-    private String status; //wheher the ride was complete or incomplete
+    private String status; 
 
-    private double fare; //how much ride costs
+    private double fare; 
     
    private Car car;      
 
