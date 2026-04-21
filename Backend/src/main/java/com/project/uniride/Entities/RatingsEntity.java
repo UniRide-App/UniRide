@@ -1,6 +1,7 @@
 package com.project.uniride.Entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.uniride.Implementation.RatingType;
 
 import jakarta.persistence.Entity;
@@ -18,6 +19,7 @@ import jakarta.persistence.Table;
 //Maps to database
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 @Table(name = "Ratings")
 public class RatingsEntity {
    @Id
