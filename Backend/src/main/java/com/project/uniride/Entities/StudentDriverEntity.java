@@ -32,6 +32,8 @@ public class StudentDriverEntity {
     private String lastName;
     private String email;
     private String school;
+    private boolean isVerified;
+    private String verificationToken;
     
     @Column(name="StudentDriverpassword")
     private String password;
@@ -85,6 +87,12 @@ public class StudentDriverEntity {
     public String getpassword(){
         return password;
     }
+    public boolean getIsVerified() { 
+        return isVerified; 
+    }
+    public String getVerificationToken() { 
+        return verificationToken; 
+    }
 
     //setters
      public void setFirstName(String firstName){
@@ -102,6 +110,12 @@ public class StudentDriverEntity {
     }
     public void setPassword(String password){
         this.password= password;
+    }
+    public void setIsVerified(boolean isVerified) { 
+        this.isVerified = isVerified; 
+    }
+    public void setVerificationToken(String verificationToken) { 
+        this.verificationToken = verificationToken; 
     }
 
     //getters and setters for entity

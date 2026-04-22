@@ -1,5 +1,6 @@
 package com.project.uniride.Web;
 
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,27 +12,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.uniride.Entities.StudentPassengerEntity;
+import com.project.uniride.Implementation.EmailValidationService;
+import com.project.uniride.Implementation.VerificationService;
 import com.project.uniride.Repositories.StudentPassengerRepository;
-
-//Author: Hannah Lowery
-//Handles Http request
 
 @RestController
 @RequestMapping("/studentpassengers")
 public class StudentPassengerController {
     private final StudentPassengerRepository repository;
+    private final VerificationService verificationService;
+    private final EmailValidationService emailValidationService;
 
-    public StudentPassengerController(StudentPassengerRepository repository) {
+    public StudentPassengerController(StudentPassengerRepository repository,
+                                      VerificationService verificationService,
+                                      EmailValidationService emailValidationService) {
         this.repository = repository;
+        this.verificationService = verificationService;
+        this.emailValidationService = emailValidationService;
     }
 
-    // Get all student passengers
     @GetMapping
     public Iterable<StudentPassengerEntity> getStudentPassengers() {
         return repository.findAll();
     }
 
-    // Get a single student passenger by ID
     @GetMapping("/{id}")
     public ResponseEntity<StudentPassengerEntity> getStudentPassengerById(@PathVariable Long id) {
         return repository.findById(id)
@@ -39,15 +43,24 @@ public class StudentPassengerController {
             .orElse(ResponseEntity.notFound().build());
     }
 
-    // Register a new student passenger
-    @PostMapping
-    public StudentPassengerEntity registerStudentPassenger(@RequestBody StudentPassengerEntity studentPassenger) {
-        return repository.save(studentPassenger);
+    @PostMapping("/register")
+    public ResponseEntity<String> registerStudentPassenger(
+            @RequestBody StudentPassengerEntity studentPassenger) {
+        if (!emailValidationService.isCollegeEmail(studentPassenger.getEmail())) {
+            return ResponseEntity.badRequest()
+                .body("Registration failed! You must use a college email address!");
+        }
+        StudentPassengerEntity existing = repository.findByEmail(studentPassenger.getEmail());
+        if (existing != null) {
+            return ResponseEntity.badRequest().body("Email already registered!");
+        }
+        verificationService.sendPassengerVerification(studentPassenger);
+        return ResponseEntity.ok("Registration successful! Please check your college email to verify your account.");
     }
 
-    // Update a student passenger
     @PutMapping("/{id}")
-    public ResponseEntity<StudentPassengerEntity> updateStudentPassenger(@PathVariable Long id, @RequestBody StudentPassengerEntity studentPassenger) {
+    public ResponseEntity<StudentPassengerEntity> updateStudentPassenger(
+            @PathVariable Long id, @RequestBody StudentPassengerEntity studentPassenger) {
         return repository.findById(id)
             .map(existingStudent -> {
                 existingStudent.setFirstName(studentPassenger.getFirstName());
@@ -60,7 +73,6 @@ public class StudentPassengerController {
             .orElse(ResponseEntity.notFound().build());
     }
 
-    // Delete a student passenger
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStudentPassenger(@PathVariable Long id) {
         if (!repository.existsById(id)) {

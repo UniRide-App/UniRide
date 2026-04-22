@@ -1,46 +1,46 @@
 package com.project.uniride.Implementation;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-//Author: Jermiah Mckeey
+
+import com.project.uniride.Entities.StudentPassengerEntity;
+import com.project.uniride.Repositories.StudentPassengerRepository;
+
 @Service
 public class StudentPassengerService implements UserDetailsService {
-    private final Map<String, StudentPassenger> students = new HashMap<>();
+    private final StudentPassengerRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public StudentPassengerService(PasswordEncoder passwordEncoder) {
-        StudentPassenger student = new StudentPassenger(
-            "student1",
-            "John",
-            "Doe",
-            "student@lsu.edu",
-            "LSU",
-            passwordEncoder.encode("password123"),
-            true
-        );
-        students.put(student.getUsername(), student);
+    public StudentPassengerService(StudentPassengerRepository repository,
+                                   PasswordEncoder passwordEncoder) {
+        this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        StudentPassenger student = students.get(username);
+        StudentPassengerEntity student = repository.findByEmail(username);
         if (student == null) {
             throw new UsernameNotFoundException("Student not found: " + username);
         }
-        return student;
+        // Check if verified before allowing login
+        if (!student.getIsVerified()) {
+            throw new UsernameNotFoundException("Student not verified: " + username);
+        }
+        return new StudentPassenger(
+            student.getEmail(),
+            student.getFirstName(),
+            student.getLastName(),
+            student.getEmail(),
+            student.getSchool(),
+            student.getpassword()
+        );
     }
 
-    public void registerStudent(StudentPassenger student) {
-        students.put(student.getUsername(), student);
-    }
-
-    public StudentPassenger findByUsername(String username) {
-        return students.get(username);
+    public StudentPassengerEntity findByEmail(String email) {
+        return repository.findByEmail(email);
     }
 }
-

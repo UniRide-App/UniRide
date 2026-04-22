@@ -30,6 +30,9 @@ public class StudentPassengerEntity {
     private String lastName;
     private String email;
     private String school;
+    private boolean isVerified;
+    private String verificationToken;
+
     @Column(name="StudentPassengerpassword")
     private String password;
     
@@ -74,6 +77,11 @@ public class StudentPassengerEntity {
     public String getpassword(){
         return password;
     }
+    public boolean getIsVerified() { 
+        return isVerified; }
+    public String getVerificationToken() { 
+        return verificationToken; }
+
 
     //setters
      public void setFirstName(String firstName){
@@ -91,6 +99,12 @@ public class StudentPassengerEntity {
     }
     public void setPassword(String password){
         this.password= password;
+    }
+    public void setIsVerified(boolean isVerified) { 
+        this.isVerified = isVerified; 
+    }
+    public void setVerificationToken(String verificationToken) { 
+        this.verificationToken = verificationToken; 
     }
 
     //getter and setter for entity

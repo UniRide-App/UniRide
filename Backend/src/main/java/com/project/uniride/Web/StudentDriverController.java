@@ -11,27 +11,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.uniride.Entities.StudentDriverEntity;
+import com.project.uniride.Implementation.EmailValidationService;
+import com.project.uniride.Implementation.VerificationService;
 import com.project.uniride.Repositories.StudentDriverRepository;
-
-//Author: Hannah Lowery
-//Handles Http request
 
 @RestController
 @RequestMapping("/studentdrivers")
 public class StudentDriverController {
     private final StudentDriverRepository repository;
+    private final VerificationService verificationService;
+    private final EmailValidationService emailValidationService;
 
-    public StudentDriverController(StudentDriverRepository repository) {
+    public StudentDriverController(StudentDriverRepository repository,
+                                   VerificationService verificationService,
+                                   EmailValidationService emailValidationService) {
         this.repository = repository;
+        this.verificationService = verificationService;
+        this.emailValidationService = emailValidationService;
     }
 
-    // Get all student drivers
     @GetMapping
     public Iterable<StudentDriverEntity> getStudentDrivers() {
         return repository.findAll();
     }
 
-    // Get a single student driver by ID
     @GetMapping("/{id}")
     public ResponseEntity<StudentDriverEntity> getStudentDriverById(@PathVariable Long id) {
         return repository.findById(id)
@@ -39,15 +42,24 @@ public class StudentDriverController {
             .orElse(ResponseEntity.notFound().build());
     }
 
-    // Register a new student driver
-    @PostMapping
-    public StudentDriverEntity registerStudentDriver(@RequestBody StudentDriverEntity studentDriver) {
-        return repository.save(studentDriver);
+    @PostMapping("/register")
+    public ResponseEntity<String> registerStudentDriver(
+            @RequestBody StudentDriverEntity studentDriver) {
+        if (!emailValidationService.isCollegeEmail(studentDriver.getEmail())) {
+            return ResponseEntity.badRequest()
+                .body("Registration failed! You must use a college email address!");
+        }
+        StudentDriverEntity existing = repository.findByEmail(studentDriver.getEmail());
+        if (existing != null) {
+            return ResponseEntity.badRequest().body("Email already registered!");
+        }
+        verificationService.sendDriverVerification(studentDriver);
+        return ResponseEntity.ok("Registration successful! Please check your college email to verify your account.");
     }
 
-    // Update a student driver
     @PutMapping("/{id}")
-    public ResponseEntity<StudentDriverEntity> updateStudentDriver(@PathVariable Long id, @RequestBody StudentDriverEntity studentDriver) {
+    public ResponseEntity<StudentDriverEntity> updateStudentDriver(
+            @PathVariable Long id, @RequestBody StudentDriverEntity studentDriver) {
         return repository.findById(id)
             .map(existingDriver -> {
                 existingDriver.setFirstName(studentDriver.getFirstName());
@@ -60,7 +72,6 @@ public class StudentDriverController {
             .orElse(ResponseEntity.notFound().build());
     }
 
-    // Delete a student driver
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStudentDriver(@PathVariable Long id) {
         if (!repository.existsById(id)) {

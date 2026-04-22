@@ -13,24 +13,22 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class StudentDriver extends Person implements UserDetails {
     private String username;
-    private boolean isVerified;
     private Car car;
 
     public StudentDriver(String username, String firstName, String lastName,
-                         String email, String school, String password, boolean isVerified, Car car) {
+                         String email, String school, String password, Car car) {
         super(firstName, lastName, email, school, password);
         this.username = username;
-        this.isVerified = isVerified;
+        
         this.car = car;
+    }
+     public StudentDriver() {
+        super(null, null, null, null, null);
     }
 
     // Getters
     public Car getCar() {
         return car;
-    }
-
-    public boolean getIsVerified() {
-        return isVerified;
     }
 
     // Setters
@@ -40,10 +38,6 @@ public class StudentDriver extends Person implements UserDetails {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public void setVerified(boolean isVerified) {
-        this.isVerified = isVerified;
     }
 
     // Spring Security required methods

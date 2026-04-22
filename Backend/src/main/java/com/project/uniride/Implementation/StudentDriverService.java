@@ -1,7 +1,7 @@
 package com.project.uniride.Implementation;
 
-import java.util.HashMap;
-import java.util.Map;
+//Author: Hannah Lowery
+
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,41 +9,43 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-//Author: Hannah Lowery
+import com.project.uniride.Entities.StudentDriverEntity;
+import com.project.uniride.Repositories.StudentDriverRepository;
 
 @Service
 public class StudentDriverService implements UserDetailsService {
-    private final Map<String, StudentDriver> drivers = new HashMap<>();
+    private final StudentDriverRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public StudentDriverService(PasswordEncoder passwordEncoder) {
-        Car car = new Car("Toyota", "Camry", "Blue", "ABC123", 2020);
-        StudentDriver driver = new StudentDriver(
-            "driver1",
-            "Mike",
-            "Johnson",
-            "driver@lsu.edu",
-            "LSU",
-            passwordEncoder.encode("password456"),
-            true,
-            car
-        );
-        drivers.put(driver.getUsername(), driver);
+    public StudentDriverService(StudentDriverRepository repository,
+                                PasswordEncoder passwordEncoder) {
+        this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        StudentDriver driver = drivers.get(username);
+        StudentDriverEntity driver = repository.findByEmail(username);
         if (driver == null) {
             throw new UsernameNotFoundException("Driver not found: " + username);
         }
-        return driver;
+        // Check if verified before allowing login
+        if (!driver.getIsVerified()) {
+            throw new UsernameNotFoundException("Driver not verified: " + username);
+        }
+        return new StudentDriver(
+            driver.getEmail(),
+            driver.getFirstName(),
+            driver.getLastName(),
+            driver.getEmail(),
+            driver.getSchool(),
+            driver.getpassword(),
+            null
+        );
     }
 
-    public void registerDriver(StudentDriver driver) {
-        drivers.put(driver.getUsername(), driver);
-    }
-
-    public StudentDriver findByUsername(String username) {
-        return drivers.get(username);
+    public StudentDriverEntity findByEmail(String email) {
+        return repository.findByEmail(email);
     }
 }
+
