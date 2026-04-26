@@ -1,54 +1,62 @@
 package com.project.uniride.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.index.Indexed;
+import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-@Document(collection = "users")
+@Entity
+@Table(name = "users")
 public class User {
 
     @Id
     private String id;
 
-    @Indexed(unique = true)
+    @Column(unique = true)
     private String email;
 
+    @Column(unique = true)
     private String firebaseUid;
+
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private String passwordHash; // handled by Firebase, stored for reference
-    private boolean emailVerified;
 
-    // Role
     public enum AccountType { PASSENGER, DRIVER }
+
+    @Enumerated(EnumType.STRING)
     private AccountType accountType = AccountType.PASSENGER;
+
     private boolean isOnline;
 
-    // Driver-specific
+    @Embedded
     private Vehicle vehicle;
 
-    // Location
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "latitude",  column = @Column(name = "current_lat")),
+        @AttributeOverride(name = "longitude", column = @Column(name = "current_lng"))
+    })
     private GeoLocation currentLocation;
 
-    // Rating
     private double averageRating = 5.0;
     private int totalRides;
     private int totalRatingsReceived;
     private double ratingSum;
 
-    // Payment
+    @ElementCollection
+    @CollectionTable(name = "user_payment_methods", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "payment_method")
     private List<String> paymentMethods = new ArrayList<>();
-
-    // OTP
-    private String otpCode;
-    private Instant otpExpiresAt;
 
     private Instant createdAt;
     private Instant updatedAt;
+
+    @PrePersist
+    protected void prePersist() {
+        if (id == null) id = UUID.randomUUID().toString();
+    }
 
     // ─── Getters & Setters ───
     public String getId() { return id; }
@@ -64,10 +72,6 @@ public class User {
     public String getDisplayName() { return firstName + " " + lastName; }
     public String getPhoneNumber() { return phoneNumber; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
-    public String getPasswordHash() { return passwordHash; }
-    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
-    public boolean isEmailVerified() { return emailVerified; }
-    public void setEmailVerified(boolean emailVerified) { this.emailVerified = emailVerified; }
     public AccountType getAccountType() { return accountType; }
     public void setAccountType(AccountType accountType) { this.accountType = accountType; }
     public boolean isOnline() { return isOnline; }
@@ -86,10 +90,6 @@ public class User {
     public void setRatingSum(double ratingSum) { this.ratingSum = ratingSum; }
     public List<String> getPaymentMethods() { return paymentMethods; }
     public void setPaymentMethods(List<String> p) { this.paymentMethods = p; }
-    public String getOtpCode() { return otpCode; }
-    public void setOtpCode(String otpCode) { this.otpCode = otpCode; }
-    public Instant getOtpExpiresAt() { return otpExpiresAt; }
-    public void setOtpExpiresAt(Instant otpExpiresAt) { this.otpExpiresAt = otpExpiresAt; }
     public Instant getCreatedAt() { return createdAt; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
     public Instant getUpdatedAt() { return updatedAt; }

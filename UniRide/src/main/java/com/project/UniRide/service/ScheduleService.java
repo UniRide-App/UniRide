@@ -44,12 +44,12 @@ public class ScheduleService {
 
     /** Find available drivers for a specific date */
     public List<Schedule> findAvailableDrivers(LocalDate date) {
-        return schedRepo.findAvailableDriversForDate(date);
+        return schedRepo.findByTypeAndMatchedFalseAndDate(ScheduleType.DRIVER_AVAILABILITY, date);
     }
 
     /** Find unmatched ride requests for a specific date */
     public List<Schedule> findUnmatchedRequests(LocalDate date) {
-        return schedRepo.findUnmatchedRideRequestsForDate(date);
+        return schedRepo.findByTypeAndMatchedFalseAndDate(ScheduleType.RIDE_REQUEST, date);
     }
 
     /** Match a rider's schedule with a driver's availability */

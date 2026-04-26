@@ -9,38 +9,14 @@ public class DTOs {
     public static class RegisterRequest {
         private String firstName;
         private String lastName;
-        private String email;
         private String phoneNumber;
-        private String password;
 
         public String getFirstName() { return firstName; }
         public void setFirstName(String f) { this.firstName = f; }
         public String getLastName() { return lastName; }
         public void setLastName(String l) { this.lastName = l; }
-        public String getEmail() { return email; }
-        public void setEmail(String e) { this.email = e; }
         public String getPhoneNumber() { return phoneNumber; }
         public void setPhoneNumber(String p) { this.phoneNumber = p; }
-        public String getPassword() { return password; }
-        public void setPassword(String p) { this.password = p; }
-    }
-
-    public static class OtpVerifyRequest {
-        private String email;
-        private String code;
-        public String getEmail() { return email; }
-        public void setEmail(String e) { this.email = e; }
-        public String getCode() { return code; }
-        public void setCode(String c) { this.code = c; }
-    }
-
-    public static class LoginRequest {
-        private String email;
-        private String password;
-        public String getEmail() { return email; }
-        public void setEmail(String e) { this.email = e; }
-        public String getPassword() { return password; }
-        public void setPassword(String p) { this.password = p; }
     }
 
     // ─── User ───
@@ -153,6 +129,19 @@ public class DTOs {
         public void setGoingTo(String g) { this.goingTo = g; }
         public long getTimeDiffMinutes() { return timeDiffMinutes; }
         public void setTimeDiffMinutes(long t) { this.timeDiffMinutes = t; }
+    }
+
+    // ─── Update Profile ───
+    public static class UpdateProfileRequest {
+        private String firstName;
+        private String lastName;
+        private String phoneNumber;
+        public String getFirstName() { return firstName; }
+        public void setFirstName(String f) { this.firstName = f; }
+        public String getLastName() { return lastName; }
+        public void setLastName(String l) { this.lastName = l; }
+        public String getPhoneNumber() { return phoneNumber; }
+        public void setPhoneNumber(String p) { this.phoneNumber = p; }
     }
 
     // ─── API Response Wrapper ───

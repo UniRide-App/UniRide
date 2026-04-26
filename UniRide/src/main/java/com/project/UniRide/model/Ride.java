@@ -1,10 +1,11 @@
 package com.project.uniride.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.*;
 import java.time.Instant;
+import java.util.UUID;
 
-@Document(collection = "rides")
+@Entity
+@Table(name = "rides")
 public class Ride {
 
     @Id
@@ -16,18 +17,31 @@ public class Ride {
     private String driverName;
 
     private String pickupAddress;
+
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "latitude",  column = @Column(name = "pickup_lat")),
+        @AttributeOverride(name = "longitude", column = @Column(name = "pickup_lng"))
+    })
     private GeoLocation pickupLocation;
+
     private String destinationAddress;
+
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "latitude",  column = @Column(name = "dest_lat")),
+        @AttributeOverride(name = "longitude", column = @Column(name = "dest_lng"))
+    })
     private GeoLocation destinationLocation;
 
     public enum RideStatus { REQUESTED, ACCEPTED, DRIVER_ARRIVED, IN_PROGRESS, COMPLETED, CANCELLED }
+
+    @Enumerated(EnumType.STRING)
     private RideStatus status;
 
-    // Pricing
     private double price;
     private double driverEarnings;
 
-    // Timestamps
     private Instant requestedAt;
     private Instant acceptedAt;
     private Instant driverArrivedAt;
@@ -37,13 +51,16 @@ public class Ride {
     private String cancelledBy;
     private String cancellationReason;
 
-    // Distance & time
     private double estimatedDistanceMiles;
     private int estimatedDurationMinutes;
 
-    // Ratings
     private Integer riderRating;
     private Integer driverRating;
+
+    @PrePersist
+    protected void prePersist() {
+        if (id == null) id = UUID.randomUUID().toString();
+    }
 
     // ─── Getters & Setters ───
     public String getId() { return id; }
@@ -95,7 +112,6 @@ public class Ride {
     public Integer getDriverRating() { return driverRating; }
     public void setDriverRating(Integer d) { this.driverRating = d; }
 
-    /** Calculate price based on distance: $3 base + $1.50/mile */
     public static double calculatePrice(double distanceMiles) {
         return Math.round((3.0 + distanceMiles * 1.50) * 100.0) / 100.0;
     }

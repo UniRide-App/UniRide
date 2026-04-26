@@ -1,16 +1,13 @@
 package com.project.uniride.repository;
 
 import com.project.uniride.model.User;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository extends MongoRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findByEmail(String email);
     Optional<User> findByFirebaseUid(String firebaseUid);
     boolean existsByEmail(String email);
-
-    @Query("{ 'accountType': 'DRIVER', 'isOnline': true, 'currentLocation': { $exists: true } }")
-    List<User> findAvailableDrivers();
+    List<User> findByAccountTypeAndIsOnlineTrue(User.AccountType accountType);
 }

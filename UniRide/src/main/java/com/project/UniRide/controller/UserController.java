@@ -50,6 +50,14 @@ public class UserController {
         catch (Exception e) { return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage())); }
     }
 
+    @PutMapping("/{id}/profile")
+    public ResponseEntity<ApiResponse<User>> updateProfile(@PathVariable String id, @RequestBody UpdateProfileRequest req) {
+        try {
+            User user = userService.updateProfile(id, req.getFirstName(), req.getLastName(), req.getPhoneNumber());
+            return ResponseEntity.ok(ApiResponse.ok("Profile updated", user));
+        } catch (Exception e) { return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage())); }
+    }
+
     @GetMapping("/nearby-drivers")
     public ResponseEntity<ApiResponse<List<NearbyDriverResponse>>> nearbyDrivers(
             @RequestParam double lat, @RequestParam double lng, @RequestParam(defaultValue = "5") int limit) {
