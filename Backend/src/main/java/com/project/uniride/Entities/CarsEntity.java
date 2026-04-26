@@ -1,5 +1,7 @@
 package com.project.uniride.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -14,6 +16,7 @@ import jakarta.persistence.Table;
 //has a manytoOne relationship so the car can only have one StudentDriver
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 @Table(name = "Cars")
 public class CarsEntity {
     @Id
