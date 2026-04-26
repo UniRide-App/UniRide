@@ -52,6 +52,8 @@ public class AuthController {
             @RequestHeader("Authorization") String authHeader) {
         try {
             FirebaseToken token = verifyToken(authHeader);
+            if (!token.isEmailVerified())
+                return ResponseEntity.status(403).body(ApiResponse.error("Please verify your email before logging in."));
             User user = userService.loginWithFirebase(token.getUid());
             return ResponseEntity.ok(ApiResponse.ok("Login successful", user));
         } catch (IllegalArgumentException e) {

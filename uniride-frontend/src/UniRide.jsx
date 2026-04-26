@@ -560,6 +560,10 @@ export default function UniRide() {
     try {
       const auth = getAuth();
       const cred = await signInWithEmailAndPassword(auth, loginData.em, loginData.pw);
+      if (!cred.user.emailVerified) {
+        go("verifyEmail");
+        return;
+      }
       const res = await apiLogin();
       const user = res.data?.data;
       setUserId(user?.id || "");
