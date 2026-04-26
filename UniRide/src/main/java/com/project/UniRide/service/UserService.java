@@ -24,8 +24,21 @@ public class UserService {
     public User registerWithFirebase(String firebaseUid, String email, RegisterRequest req) {
         if (!email.endsWith("@lsu.edu"))
             throw new IllegalArgumentException("Only @lsu.edu emails are allowed");
-        if (userRepo.existsByEmail(email))
-            throw new IllegalArgumentException("Email already registered");
+
+        // If the email exists but under a different Firebase UID, the old Firebase account
+        // was deleted and recreated — reuse and update the existing profile.
+        Optional<User> existing = userRepo.findByEmail(email);
+        if (existing.isPresent()) {
+            User user = existing.get();
+            if (user.getFirebaseUid().equals(firebaseUid))
+                throw new IllegalArgumentException("Email already registered");
+            user.setFirebaseUid(firebaseUid);
+            user.setFirstName(req.getFirstName());
+            user.setLastName(req.getLastName());
+            user.setPhoneNumber(req.getPhoneNumber());
+            user.setUpdatedAt(Instant.now());
+            return userRepo.save(user);
+        }
 
         User user = new User();
         user.setFirebaseUid(firebaseUid);

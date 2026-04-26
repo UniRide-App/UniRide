@@ -3,7 +3,7 @@ import { GoogleMap, useJsApiLoader, Marker, DirectionsRenderer } from "@react-go
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import "./firebase";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, signOut, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, signOut, updatePassword, EmailAuthProvider, reauthenticateWithCredential, applyActionCode } from "firebase/auth";
 import { register as apiRegister, login as apiLogin, rideHistory, switchAccountType, postSchedule, postAvailability, mySchedules as apiMySchedules, autocomplete as apiAutocomplete, requestRide, acceptRide, completeTrip, cancelRide, rateRide, findMatches as apiFindMatches, acceptMatch as apiAcceptMatch, geocodeAddress, goOnline, goOffline, driverArrived as apiDriverArrived, startTrip as apiStartTrip, updateLocation, deleteSchedule, getPendingRides, updateProfile } from "./api";
 
 
@@ -206,6 +206,8 @@ export default function UniRide() {
   const [pwLoading, setPwLoading] = useState(false);
   const [calYear, setCalYear] = useState(() => new Date().getFullYear());
   const [calMonth, setCalMonth] = useState(() => new Date().getMonth());
+  const [emailActionCode, setEmailActionCode] = useState("");
+  const [emailActionStatus, setEmailActionStatus] = useState(""); // "pending" | "success" | "error"
   const pendingPollRef = useRef(null);
   const locationIntervalRef = useRef(null);
   const stompRef = useRef(null);
@@ -213,6 +215,19 @@ export default function UniRide() {
   const driverLocSubRef = useRef(null);
 
   const t = dk ? TH.dark : TH.light;
+
+  // Handle Firebase email action links (verifyEmail) when app loads from email link
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const mode = params.get("mode");
+    const oobCode = params.get("oobCode");
+    if (mode === "verifyEmail" && oobCode) {
+      setEmailActionCode(oobCode);
+      setEmailActionStatus("pending");
+      setScr("emailAction");
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
 
   const formatArrivalTime = (t) => {
     if (!t) return "12:00 PM";
@@ -524,8 +539,14 @@ export default function UniRide() {
       const auth = getAuth();
       const cred = await createUserWithEmailAndPassword(auth, reg.em, reg.pw);
       await sendEmailVerification(cred.user);
-      // Create MongoDB profile via backend (token auto-attached by api.js interceptor)
-      await apiRegister({ firstName: reg.f, lastName: reg.l, phoneNumber: reg.ph });
+      try {
+        await apiRegister({ firstName: reg.f, lastName: reg.l, phoneNumber: reg.ph });
+      } catch (backendErr) {
+        // Firebase account created but backend failed — delete the orphan Firebase account
+        // so the user can try again cleanly
+        await cred.user.delete();
+        throw backendErr;
+      }
       setVerifyEmailSent(true);
       go("verifyEmail");
     } catch (err) {
@@ -538,15 +559,30 @@ export default function UniRide() {
     }
   };
 
+  const handleApplyEmailVerification = async () => {
+    setEmailActionStatus("loading");
+    try {
+      await applyActionCode(getAuth(), emailActionCode);
+      await getAuth().currentUser?.reload();
+      setEmailActionStatus("success");
+    } catch {
+      setEmailActionStatus("error");
+    }
+  };
+
   const handleResendVerification = async () => {
     setAuthError("");
     try {
       const user = getAuth().currentUser;
-      if (user) await sendEmailVerification(user);
+      if (!user) { setAuthError("Session expired — please go back to login."); return; }
+      await sendEmailVerification(user);
       setVerifyEmailSent(true);
       setTimeout(() => setVerifyEmailSent(false), 4000);
-    } catch {
-      setAuthError("Could not resend verification email. Please try again.");
+    } catch (err) {
+      const msg = err.code === "auth/too-many-requests"
+        ? "Too many emails sent. Please wait a few minutes and try again."
+        : "Could not resend verification email. Please try again.";
+      setAuthError(msg);
     }
   };
 
@@ -834,6 +870,48 @@ export default function UniRide() {
         <button onClick={handleLogin} disabled={authLoading} style={{width:"100%",padding:"16px",background:authLoading?"#9CA3AF":BL,border:"none",borderRadius:14,fontSize:18,fontWeight:700,color:"#fff",fontFamily:FD,cursor:authLoading?"not-allowed":"pointer"}}>
           {authLoading?"Logging in…":"Log In"}
         </button>
+      </div>
+    </S>
+  );
+
+  // ═══════════════════════════════════════════
+  // 3a. EMAIL ACTION HANDLER (custom link target)
+  // ═══════════════════════════════════════════
+  const EmailAction = () => (
+    <S n="emailAction" scr={scr}>
+      <div style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"40px 32px",background:t.bg}}>
+        <div style={{width:88,height:88,borderRadius:"50%",background:t.card,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:28}}>
+          {I.grad(emailActionStatus==="success" ? GRN : B)}
+        </div>
+        {emailActionStatus === "success" ? (
+          <>
+            <h2 style={{fontFamily:FD,fontSize:24,fontWeight:700,color:GRN,margin:"0 0 10px",textAlign:"center"}}>Email Verified!</h2>
+            <p style={{color:t.t2,fontSize:14,margin:"0 0 32px",textAlign:"center"}}>Your account is now verified. You can log in.</p>
+            <button onClick={()=>go("login")} style={{padding:"14px 48px",background:B,border:"none",borderRadius:14,color:"#fff",fontSize:16,fontWeight:600,fontFamily:FD,cursor:"pointer"}}>
+              Go to Login
+            </button>
+          </>
+        ) : emailActionStatus === "error" ? (
+          <>
+            <h2 style={{fontFamily:FD,fontSize:24,fontWeight:700,color:RED,margin:"0 0 10px",textAlign:"center"}}>Link Expired</h2>
+            <p style={{color:t.t2,fontSize:14,margin:"0 0 32px",textAlign:"center"}}>This link has expired or already been used. Log in to request a new one.</p>
+            <button onClick={()=>go("login")} style={{padding:"14px 48px",background:B,border:"none",borderRadius:14,color:"#fff",fontSize:16,fontWeight:600,fontFamily:FD,cursor:"pointer"}}>
+              Go to Login
+            </button>
+          </>
+        ) : (
+          <>
+            <h2 style={{fontFamily:FD,fontSize:24,fontWeight:700,color:B,margin:"0 0 10px",textAlign:"center"}}>Verify Your Email</h2>
+            <p style={{color:t.t2,fontSize:14,margin:"0 0 32px",textAlign:"center"}}>Tap the button below to confirm your UniRide account.</p>
+            <button
+              onClick={handleApplyEmailVerification}
+              disabled={emailActionStatus==="loading"}
+              style={{padding:"16px 48px",background:emailActionStatus==="loading"?"#9CA3AF":B,border:"none",borderRadius:14,color:"#fff",fontSize:17,fontWeight:700,fontFamily:FD,cursor:emailActionStatus==="loading"?"not-allowed":"pointer"}}
+            >
+              {emailActionStatus==="loading" ? "Verifying…" : "Verify My Email"}
+            </button>
+          </>
+        )}
       </div>
     </S>
   );
@@ -1495,7 +1573,7 @@ export default function UniRide() {
     <div style={{minHeight:"100vh",background:"linear-gradient(135deg,#0F172A,#1E293B)",display:"flex",alignItems:"center",justifyContent:"center",padding:"12px 0"}}>
       <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
       <div style={{fontFamily:FN,width:"100%",maxWidth:400,margin:"0 auto",height:"100dvh",maxHeight:880,background:t.bg,position:"relative",overflow:"hidden",borderRadius:28,boxShadow:"0 25px 80px rgba(0,0,0,.25)"}}>
-        {Welcome()}{Register()}{Login()}{VerifyEmail()}{RiderHome()}{SchedWeek()}{CalSched()}{Account()}
+        {Welcome()}{Register()}{Login()}{EmailAction()}{VerifyEmail()}{RiderHome()}{SchedWeek()}{CalSched()}{Account()}
         {RidePreview()}{FindingDriver()}{InRide()}{RateRide()}{DriverActiveRide()}
       </div>
     </div>
