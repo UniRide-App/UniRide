@@ -7,3 +7,7 @@ target/
 .DS_Store
 Thumbs.db
 uniride-frontend/build/
+*service-account*.json
+*firebase-adminsdk*.json
+.claude/
+.vscode/

@@ -64,6 +64,11 @@ public class RideController {
         catch (Exception e) { return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage())); }
     }
 
+    @GetMapping("/pending")
+    public ResponseEntity<ApiResponse<List<Ride>>> pending() {
+        return ResponseEntity.ok(ApiResponse.ok(rideService.getPendingRides()));
+    }
+
     @GetMapping("/history")
     public ResponseEntity<ApiResponse<List<Ride>>> history(@RequestParam String userId) {
         return ResponseEntity.ok(ApiResponse.ok(rideService.getHistory(userId)));

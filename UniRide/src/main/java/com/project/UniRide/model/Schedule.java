@@ -1,12 +1,13 @@
 package com.project.uniride.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.*;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
-@Document(collection = "schedules")
+@Entity
+@Table(name = "schedules")
 public class Schedule {
 
     @Id
@@ -16,24 +17,42 @@ public class Schedule {
     private String userName;
 
     public enum ScheduleType { RIDE_REQUEST, DRIVER_AVAILABILITY }
+
+    @Enumerated(EnumType.STRING)
     private ScheduleType type;
 
     private LocalDate date;
     private LocalTime arrivalTime;
     private String leavingFrom;
+
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "latitude",  column = @Column(name = "leaving_from_lat")),
+        @AttributeOverride(name = "longitude", column = @Column(name = "leaving_from_lng"))
+    })
     private GeoLocation leavingFromLocation;
+
     private String goingTo;
+
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "latitude",  column = @Column(name = "going_to_lat")),
+        @AttributeOverride(name = "longitude", column = @Column(name = "going_to_lng"))
+    })
     private GeoLocation goingToLocation;
 
-    // For weekly recurring
-    private String dayOfWeek; // "Monday", "Tuesday", etc.
+    private String dayOfWeek;
     private boolean recurring;
 
-    // Matching
     private String matchedWithUserId;
     private boolean matched;
 
     private Instant createdAt;
+
+    @PrePersist
+    protected void prePersist() {
+        if (id == null) id = UUID.randomUUID().toString();
+    }
 
     // ─── Getters & Setters ───
     public String getId() { return id; }

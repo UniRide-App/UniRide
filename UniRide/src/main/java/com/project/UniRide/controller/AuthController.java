@@ -1,5 +1,7 @@
 package com.project.uniride.controller;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseToken;
 import com.project.uniride.dto.DTOs.*;
 import com.project.uniride.model.User;
 import com.project.uniride.service.UserService;
@@ -15,12 +17,25 @@ public class AuthController {
 
     public AuthController(UserService userService) { this.userService = userService; }
 
-    /** POST /api/auth/register — Register with LSU email, sends OTP */
+    private FirebaseToken verifyToken(String authHeader) throws Exception {
+        if (authHeader == null || !authHeader.startsWith("Bearer "))
+            throw new IllegalArgumentException("Missing or invalid Authorization header");
+        return FirebaseAuth.getInstance().verifyIdToken(authHeader.substring(7));
+    }
+
+    /** POST /api/auth/register
+     *  Header: Authorization: Bearer <firebase-id-token>
+     *  Body:   { firstName, lastName, phoneNumber }
+     *  Creates the MongoDB user profile after Firebase account creation.
+     */
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<User>> register(@RequestBody RegisterRequest req) {
+    public ResponseEntity<ApiResponse<User>> register(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody RegisterRequest req) {
         try {
-            User user = userService.register(req);
-            return ResponseEntity.ok(ApiResponse.ok("OTP sent to " + req.getEmail(), user));
+            FirebaseToken token = verifyToken(authHeader);
+            User user = userService.registerWithFirebase(token.getUid(), token.getEmail(), req);
+            return ResponseEntity.ok(ApiResponse.ok("Registration complete!", user));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         } catch (Exception e) {
@@ -28,38 +43,17 @@ public class AuthController {
         }
     }
 
-    /** POST /api/auth/verify-otp — Verify the 4-digit OTP code */
-    @PostMapping("/verify-otp")
-    public ResponseEntity<ApiResponse<User>> verifyOtp(@RequestBody OtpVerifyRequest req) {
-        try {
-            User user = userService.verifyOtp(req);
-            return ResponseEntity.ok(ApiResponse.ok("Email verified!", user));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(ApiResponse.error("Server error: " + e.getMessage()));
-        }
-    }
-
-    /** POST /api/auth/login — Log in with email + password */
+    /** POST /api/auth/login
+     *  Header: Authorization: Bearer <firebase-id-token>
+     *  Looks up the MongoDB profile by Firebase UID.
+     */
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<User>> login(@RequestBody LoginRequest req) {
+    public ResponseEntity<ApiResponse<User>> login(
+            @RequestHeader("Authorization") String authHeader) {
         try {
-            User user = userService.login(req);
+            FirebaseToken token = verifyToken(authHeader);
+            User user = userService.loginWithFirebase(token.getUid());
             return ResponseEntity.ok(ApiResponse.ok("Login successful", user));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(ApiResponse.error("Server error: " + e.getMessage()));
-        }
-    }
-
-    /** POST /api/auth/resend-otp?email=... — Resend OTP code */
-    @PostMapping("/resend-otp")
-    public ResponseEntity<ApiResponse<String>> resendOtp(@RequestParam String email) {
-        try {
-            userService.resendOtp(email);
-            return ResponseEntity.ok(ApiResponse.ok("New OTP sent", email));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         } catch (Exception e) {

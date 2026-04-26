@@ -1,5 +1,8 @@
 package com.project.uniride.model;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class Vehicle {
     private String make;
     private String model;

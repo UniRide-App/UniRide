@@ -1,5 +1,7 @@
 package com.project.uniride.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -28,7 +30,17 @@ public class GoogleMapsService {
     private String apiKey;
 
     private final RestTemplate restTemplate = new RestTemplate();
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private static final String BASE = "https://maps.googleapis.com/maps/api";
+
+    public static class DistanceData {
+        public final double distanceMiles;
+        public final int durationMinutes;
+        public DistanceData(double distanceMiles, int durationMinutes) {
+            this.distanceMiles = distanceMiles;
+            this.durationMinutes = durationMinutes;
+        }
+    }
 
     /** Get place autocomplete suggestions for the search bar */
     public String autocomplete(String input, double lat, double lng) {
@@ -58,6 +70,22 @@ public class GoogleMapsService {
                 + "&destinations=" + destLat + "," + destLng
                 + "&key=" + apiKey;
         return restTemplate.getForObject(url, String.class);
+    }
+
+    /** Parse Distance Matrix response into miles + minutes. Returns null on failure. */
+    public DistanceData getDistanceData(double oLat, double oLng, double dLat, double dLng) {
+        try {
+            String json = getDistanceMatrix(oLat, oLng, dLat, dLng);
+            JsonNode element = objectMapper.readTree(json)
+                    .path("rows").get(0)
+                    .path("elements").get(0);
+            if (!"OK".equals(element.path("status").asText())) return null;
+            int meters = element.path("distance").path("value").asInt();
+            int seconds = element.path("duration").path("value").asInt();
+            return new DistanceData(meters / 1609.344, (int) Math.ceil(seconds / 60.0));
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /** Geocode an address to lat/lng */
