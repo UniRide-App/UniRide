@@ -1,0 +1,56 @@
+.splash {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0;
+  z-index: 9999;
+}
+
+.splash__phone {
+  width: 100%;
+  max-width: 400px;
+  height: 100dvh;
+  max-height: 880px;
+  border-radius: 28px;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  background: #2a75fd;
+  display: grid;
+  place-items: center;
+}
+
+.splash__content {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  min-height: 100%;
+  width: 100%;
+  padding: 24px 20px;
+}
+
+.splash__logo {
+  width: min(360px, 88%);
+  height: auto;
+  display: block;
+}
+
+.splash__mark {
+  fill: none;
+  stroke: #0f172a;
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: var(--path-length, 1);
+  stroke-dashoffset: var(--path-length, 1);
+  animation: splash-draw var(--draw-ms, 1300ms) ease-out forwards;
+  animation-delay: var(--delay-ms, 0ms);
+}
+
+@keyframes splash-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
