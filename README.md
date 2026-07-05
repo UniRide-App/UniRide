@@ -11,18 +11,13 @@ Hustler: Jack Dugan\
 Hipster: Jessica Smith, Gracielle Perez 
 
 # About Our Software
-
-Describe a little about what the project is about here.
+UniRide is a rideshare app made by students for students. A student exvlusive rideshare app that connects verified studet drivers and passengers for safe transportation to and from thier campus.
 ## Platforms Tested on
 - MacOS
-- Android
-- iOS
-- Linux
 - Windows
 # Important Links
 Kanban Board: [link]\
-Designs: [link]\
-Styles Guide(s): [link]
+Designs: https://www.figma.com/design/fqwDVtzkNUervjmnvZwS7m/UniRide?node-id=0-1&p=f&t=1yfK8Cah8Hkkra09-0\
 
 # How to Run Dev and Test Environment
 
